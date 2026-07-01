@@ -24,7 +24,7 @@
 
 | Файл | Переводчик | Охват (`rvdata2`) |
 |------|------------|-------------------|
-| `supplementary.trans` | melstroy | Classes, Items, Weapons, Skills, States, System, … |
+| `supplementary.trans` | toilettrauma | Classes, Items, Weapons, Skills, States, System, … |
 | _(добавить)_ | _ник 2_ | _его файлы_ |
 | _(добавить)_ | _ник 3_ | _его файлы_ |
 
