@@ -1,148 +1,148 @@
 =begin #=======================================================================
   
-◆◇入手インフォメーション＋マップエフェクトベース RGSS3◇◆ ※starさんの移植品
-　★-----更にカスタマイズを施したバージョン
+◆◇ Получение информации + База картографических эффектов RGSS3 ◇◆ *порт от star
+　★----- версия с дополнительной настройкой
 
-◆VX Ace移植◆
+◆Порт для VX Ace◆
 ◆DEICIDE ALMA
-◆レーネ　
+◆Рейне　
 ◆http://blog.goo.ne.jp/exa_deicide_alma
 
-◆カスタマイズ◆
+◆Настройка◆
 ◆Jun.A
 
-★変更点(移植版)
+★Изменения (портированная версия)
 
-  インフォの文章はヘルプの１行目の文章になります。
-  (<info:任意の文字列>で指定した場合はそちらを優先)
+  Текст уведомления берётся из первой строки описания (справки).
+  (Если указано <info:произвольная строка>, приоритет у неё)
   
-  GET = true ならインフォを出したアイテムを入手します。
-  (アイテム、武器、防具、お金が対象)
+  Если GET = true, то предмет, для которого показано уведомление, действительно выдаётся.
+  (Предметы, оружие, броня, деньги)
 
-★変更点(カスタマイズ版 / Jun.A)
+★Изменения (настроенная версия / Jun.A)
 
-  指定スイッチをオンにした状態で、アイテム・武器・防具・スキル・お金・経験値を
-  入手したり失ったりすると、自動で情報を表示するようにしました。
+  При включённом указанном переключателе, при получении или потере предметов,
+  оружия, брони, навыков, денег, опыта автоматически выводится уведомление.
   
-  なお、コマンドスクリプトから書き出す場合、スイッチを無視して表示されます。
-
-  また、テキスト出力に対応しました。
-  簡単な情報をテキスト出力したいときに便利かと思います。
+  При вызове из командного скрипта уведомление показывается независимо от переключателя.
   
-  (注意)
-    コマンドスクリプトで経験値増減・スキル習得を呼び出した場合、
-    表示されるだけで、実際には増減・習得しません。別途スクリプト必須です。
-    コマンド「経験値の増減」「スキルの増減」から呼び出した場合には自動習得します。
+  Также добавлена поддержка текстового вывода.
+  Полезно для вывода простой информации.
+  
+  (Внимание)
+    При вызове изменения опыта или изучения навыка через командный скрипт
+    будет показано только уведомление, но само изменение/изучение не произойдёт.
+    Для реального изменения/изучения нужен отдельный скрипт.
+    При вызове через команды «Увеличение/уменьшение опыта» и «Изменение навыков»
+    всё происходит автоматически.
 
-◆導入箇所
-▼素材のところ、mainより上
-　ひきも記(tomoaky)さんのアイコンポップスクリプトが競合するため、
-　アイコンポップスクリプトはこのスクリプトの下に配置してください。
+◆Размещение
+▼ В разделе материалов, выше main
+  Из-за конфликта со скриптом всплывающих иконок от tomoaky,
+  этот скрипт должен располагаться ниже, чем скрипт всплывающих иконок.
 
 =end #=========================================================================
 #==============================================================================
 # ★RGSS2 
-# STEMB_マップエフェクトベース v0.8
+# STEMB_База картографических эффектов v0.8
 # 
-# ・エフェクト表示のための配列定義、フレーム更新、ビューポート関連付け
+# ・Определение массивов для отображения эффектов, обновление кадра, привязка вьюпорта
 #
 #==============================================================================
 # ★RGSS2 
-# STR20_入手インフォメーション v1.2 09/03/17
+# STR20_Получение информации v1.2 09/03/17
 # 
-# ・マップ画面にアイテム入手・スキル修得などの際に表示するインフォです。
-# ・表示内容は 任意指定の名目+アイテム名+ヘルプメッセージとなります。
-# ・アイテムのメモ欄に <info:任意の文字列> と記述することで
-# 　通常とは別の説明文をインフォに表示させることができます。
-# [仕様]インフォが表示されている間も移動できます。
-# 　　　移動させたくない場合はウェイトを入れてください。
+# ・Уведомление, отображаемое на экране карты при получении предмета, изучении навыка и т.д.
+# ・Содержимое: произвольный заголовок + название предмета + текст справки.
+# ・Если в заметке предмета указать <info:произвольная строка>,
+#   в уведомлении будет показана именно эта строка вместо обычного описания.
+# [Особенность] Пока отображается уведомление, игрок может двигаться.
+#               Если движение нежелательно, добавьте паузу.
 #
 #==============================================================================
 
-# 追加モジュール
+# Дополнительный модуль
 module CUSTOM_GET_WINDOW
-  DISPLAY_FLAG = 22 #道具获取显示的开关
-  GOLD_TEXT_ADD      = "获得魂！"      #お金を入手した際の表示テキスト
-  GOLD_TEXT_REMOVE   = "失去魂…"      #お金を消失した際の表示テキスト
-  ITEM_TEXT_ADD      = "获得道具！"  #アイテムを入手した際の表示テキスト
-  ITEM_TEXT_REMOVE   = "失去道具…"  #アイテムを消失した際の表示テキスト
-  WEAPON_TEXT_ADD    = "获得武器！"      #武器を入手した際の表示テキスト
-  WEAPON_TEXT_REMOVE = "失去武器…"      #武器を消失した際の表示テキスト
-  ARMOR_TEXT_ADD     = "获得防具！"      #防具を入手した際の表示テキスト
-  ARMOR_TEXT_REMOVE  = "失去防具…"      #防具を消失した際の表示テキスト
-  SKILL_TEXT_ADD     = "习得技能！"    #スキルを習得した際の表示テキスト
-  SKILL_TEXT_REMOVE  = "忘却技能…"    #スキルを忘れた際の表示テキスト
-  EXP_TEXT_ADD       = "获得EXP！"       #EXPを入手した際の表示テキスト
-  EXP_TEXT_REMOVE    = "失去EXP…"       #EXPを消失した際の表示テキスト
-
-
+  DISPLAY_FLAG = 22            # Переключатель отображения уведомлений
+  GOLD_TEXT_ADD      = "Получено душ!"          # Текст при получении денег
+  GOLD_TEXT_REMOVE   = "Потеряно душ…"          # Текст при потере денег
+  ITEM_TEXT_ADD      = "Получен предмет!"       # Текст при получении предмета
+  ITEM_TEXT_REMOVE   = "Потерян предмет…"       # Текст при потере предмета
+  WEAPON_TEXT_ADD    = "Получено оружие!"       # Текст при получении оружия
+  WEAPON_TEXT_REMOVE = "Потеряно оружие…"       # Текст при потере оружия
+  ARMOR_TEXT_ADD     = "Получена броня!"        # Текст при получении брони
+  ARMOR_TEXT_REMOVE  = "Потеряна броня…"        # Текст при потере брони
+  SKILL_TEXT_ADD     = "Изучен навык!"          # Текст при изучении навыка
+  SKILL_TEXT_REMOVE  = "Забыт навык…"           # Текст при забывании навыка
+  EXP_TEXT_ADD       = "Получен EXP!"           # Текст при получении опыта
+  EXP_TEXT_REMOVE    = "Потерян EXP…"           # Текст при потере опыта
 end
 
 class Window_Getinfo < Window_Base
-  # 設定箇所
-  #G_ICON  = 260   #  金钱入手所用的图标索引
-  G_ICON  = 120   # 金钱入手所用的图标索引
-  T_ICON  = 125   # 文本显示内容的图标索引 
-  Y_TYPE  = 1     # Y座標の位置(0 = 上基準　1 = 下基準)
-  Z       = 188   # Z座標(問題が起きない限り変更しないでください)
-  TIME    = 180   # インフォ表示時間(1/60sec)
-  OPACITY = 32    # 透明度変化スピード
-  B_COLOR = Color.new(0, 0, 0, 160)        # インフォバックの色
-  INFO_SE = RPG::SE.new("magic1", 80, 80) # インフォ表示時の効果音
+  # Настройки
+  #G_ICON  = 260   # Индекс иконки для денег
+  G_ICON  = 120   # Индекс иконки для денег
+  T_ICON  = 125   # Индекс иконки для текстовых уведомлений
+  Y_TYPE  = 1     # Позиция по Y (0 = верх, 1 = низ)
+  Z       = 188   # Z-координата (не меняйте, если нет проблем)
+  TIME    = 180   # Время отображения уведомления (1/60 сек)
+  OPACITY = 32    # Скорость изменения прозрачности
+  B_COLOR = Color.new(0, 0, 0, 160)        # Цвет фона уведомления
+  INFO_SE = RPG::SE.new("magic1", 80, 80)  # Звук при появлении уведомления
   
-  #STR20W  = /info\[\/(.*)\/\]/im # メモ設定ワード(VXと同じ)
-  STR20W  = /<info:(.*?)>/im      # メモ設定ワード
+  #STR20W  = /info\[\/(.*)\/\]/im          # Ключевое слово для заметки (VX)
+  STR20W  = /<info:(.*?)>/im               # Ключевое слово для заметки
   
-  GET = true # インフォを出したアイテムを入手するかどうか(スキルは除く)
+  GET = true # Получать ли предмет, для которого показано уведомление (кроме навыков)
 end
 #
 if false
-# ★以下をコマンドのスクリプト等に貼り付けてテキスト表示----------------★
+# ★ Вставьте следующий код в командный скрипт для вывода текстового уведомления ----★
 
-# 種類 / 0=ｱｲﾃﾑ 1=武器 2=防具 3=ｽｷﾙ 4=金 5=テキスト(新規対応)
+# Тип / 0=предмет 1=оружие 2=броня 3=навык 4=деньги 5=текст (новое)
 type = 0
-# ID  / 金の場合は金額を入力
+# ID / для денег введите сумму
 id   = 1
-# 入手テキスト / 金の場合無効
-text = "获得道具！"
-# 増減(数) / プラス・マイナス両対応 
+# Текст уведомления / для денег не используется
+text = "Получен предмет!"
+# Количество (число) / поддерживаются положительные и отрицательные значения
 value = 1
 e = $game_temp.streffect
 e.push(Window_Getinfo.new(id, type, text, value))
-# ★ここまで------------------------------------------------------------★
-# □ 追加でテキスト機能を追加。
+# ★ Конец вставки ----------------------------------------------------------★
+# □ Дополнительно: текстовая функция.
 
-# 種類 / 0=ｱｲﾃﾑ 1=武器 2=防具 3=ｽｷﾙ 4=金 5=テキスト(新規対応)
+# Тип / 0=предмет 1=оружие 2=броня 3=навык 4=деньги 5=текст (новое)
 type = 0
-# ID / 大きく表示される部分のテキスト
-id   = "テストコメント"
-# テキスト / 小さく表示される部分のテキスト
-text = "ミニインフォメーション"
-# 意味はありませんが、必ずvalueにゼロを記してください
-# ※無いとミニインフォが表示されません
+# ID / текст, который будет отображаться крупно
+id   = "Тестовый комментарий"
+# Текст / текст, который будет отображаться мелко
+text = "Мини-информация"
+# Значение не имеет значения, но обязательно укажите ноль
+# ※ Без него мини-уведомление не отобразится
 value = 0
 #
 e = $game_temp.streffect
 e.push(Window_Getinfo.new(id, type, text))
-# ★ここまで------------------------------------------------------------★
+# ★ Конец вставки ----------------------------------------------------------★
 #
-# ◇スキル修得時などにアクター名を直接打ち込むと
-# 　アクターの名前が変えられるゲームなどで問題が生じます。
-# 　なので、以下のようにtext部分を改造するといいかもしれません。
+# ◇ При изучении навыка и т.п., если вписать имя актёра напрямую,
+#    могут возникнуть проблемы в играх, где имя актёра можно менять.
+#    Поэтому, возможно, стоит модифицировать текст, как показано ниже.
 #
-# 指定IDのアクターの名前取得
+# Получение имени актёра с указанным ID
 t = $game_actors[1].name 
-text = t + " / 技能习得！"
+text = t + " / Навык изучен!"
 #
 end
 
 class Game_Temp
   #--------------------------------------------------------------------------
-  # ● 公開インスタンス変数
+  # ● Открытые переменные экземпляра
   #--------------------------------------------------------------------------
   attr_accessor :streffect
   #--------------------------------------------------------------------------
-  # ● オブジェクト初期化
+  # ● Инициализация объекта
   #--------------------------------------------------------------------------
   alias initialize_stref initialize
   def initialize
@@ -153,13 +153,13 @@ end
 
 class Spriteset_Map
   #--------------------------------------------------------------------------
-  # ● エフェクトの作成
+  # ● Создание эффектов
   #--------------------------------------------------------------------------
   def create_streffect
     $game_temp.streffect = []
   end
   #--------------------------------------------------------------------------
-  # ● エフェクトの解放
+  # ● Освобождение эффектов
   #--------------------------------------------------------------------------
   def dispose_streffect
     (0...$game_temp.streffect.size).each do |i|
@@ -168,7 +168,7 @@ class Spriteset_Map
     $game_temp.streffect = []
   end
   #--------------------------------------------------------------------------
-  # ● エフェクトの更新
+  # ● Обновление эффектов
   #--------------------------------------------------------------------------
   def update_streffect
     (0...$game_temp.streffect.size).each do |i|
@@ -180,7 +180,7 @@ class Spriteset_Map
     end
   end
   #--------------------------------------------------------------------------
-  # ● 遠景の作成(エイリアス)
+  # ● Создание параллакса (alias)
   #--------------------------------------------------------------------------
   alias create_parallax_stref create_parallax
   def create_parallax
@@ -188,7 +188,7 @@ class Spriteset_Map
     create_streffect
   end
   #--------------------------------------------------------------------------
-  # ● 解放(エイリアス)
+  # ● Освобождение (alias)
   #--------------------------------------------------------------------------
   alias dispose_stref dispose
   def dispose
@@ -196,7 +196,7 @@ class Spriteset_Map
     dispose_stref
   end
   #--------------------------------------------------------------------------
-  # ● 更新(エイリアス)
+  # ● Обновление (alias)
   #--------------------------------------------------------------------------
   alias update_stref update
   def update
@@ -207,7 +207,7 @@ end
 
 class Window_Getinfo < Window_Base
   #--------------------------------------------------------------------------
-  # ● オブジェクト初期化
+  # ● Инициализация объекта
   #--------------------------------------------------------------------------
   def initialize(id, type, text = "", value)
     #super(-16, 0, 544 + 32, 38 + 32)
@@ -228,19 +228,19 @@ class Window_Getinfo < Window_Base
     end
     $game_temp.getinfo_size[@i] = true 
     refresh(id, type, text, @value)
-    #SE発音　タイプチェック　0～3ならvalueを見る　4(お金)ならidを見る
+    # Воспроизведение звука. Проверка типа: 0–3 смотрят value, 4 (деньги) – id
     case type
     when 0..3
       if @value >= 1
         INFO_SE.play
       elsif @value <= -1
-        #Sound.play_evasion #減るときは音を鳴らなさい
+        #Sound.play_evasion # при потере звук не проигрывается
       end
     when 4
       if id >= 1
         Audio.se_play("Audio/SE/magic1", 80, 80)
       elsif id <= -1
-        #Sound.play_evasion #減るときは音を鳴らなさい
+        #Sound.play_evasion
       end
     when 5
         Audio.se_play('Audio/SE/Chime1', 80)
@@ -248,19 +248,19 @@ class Window_Getinfo < Window_Base
       if @value >= 1
         INFO_SE.play
       elsif @value <= -1
-        #Sound.play_evasion #減るときは音を鳴らなさい
+        #Sound.play_evasion
       end
     end
   end
   #--------------------------------------------------------------------------
-  # ● 解放
+  # ● Освобождение
   #--------------------------------------------------------------------------
   def dispose
     $game_temp.getinfo_size[@i] = nil
     super
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新
+  # ● Обновление кадра
   #--------------------------------------------------------------------------
   def update
     self.viewport = nil
@@ -278,7 +278,7 @@ class Window_Getinfo < Window_Base
     end
   end
   #--------------------------------------------------------------------------
-  # ● リフレッシュ
+  # ● Обновление содержимого
   #--------------------------------------------------------------------------
   def refresh(id, type, text = "", value)
     case type
@@ -287,45 +287,45 @@ class Window_Getinfo < Window_Base
     when 2 ; data = $data_armors[id]
     when 3 ; data = $data_skills[id]
     when 4 ; data = id
-    when 5 ; data = id  #無理やりidに載せたテキストデータをdataに格納してます。
-    when 6 ; data = id  #経験値増減の実際の値です。
-    else   ; p "typeの値がおかしいです><;"
+    when 5 ; data = id  # принудительно помещаем текстовые данные в data
+    when 6 ; data = id  # фактическое значение изменения опыта
+    else   ; p "Неверное значение type!><;"
     end
     c = B_COLOR
     #self.contents.fill_rect(0, 14, 544, 24, c)
     self.contents.fill_rect(0, 14, 644, 24, c)
-    case type #表示分岐
-    when 0..2 #アイテム・武器・防具表示
+    case type # ветвление по типу
+    when 0..2 # предмет, оружие, броня
       draw_item_name(data, 4, 14)
-      self.contents.draw_text(204, 14, 18, line_height, "ｘ")
+      self.contents.draw_text(204, 14, 18, line_height, "х")
       self.contents.draw_text(220, 14, 36, line_height, value)
       self.contents.draw_text(258, 14, 382, line_height, description(data))
-    when 3 # スキル表示
+    when 3 # навык
       draw_item_name(data, 4, 14)
       self.contents.draw_text(204, 14, 436, line_height, description(data))
-    when 4 # お金表示
+    when 4 # деньги
       draw_icon(G_ICON, 4, 14)
       self.contents.draw_text(28, 14, 176, line_height, 
       data.to_s + Vocab.currency_unit)
       $game_party.gain_gold(id) if GET
-    when 5 # テキスト出力
+    when 5 # текстовый вывод
       draw_icon(T_ICON, 4, 14)
       self.contents.draw_text(28, 14, 612, line_height, data)
-    when 6
-      self.contents.draw_text(16, 14, 48, line_height, "Exp：")
+    when 6 # опыт
+      self.contents.draw_text(16, 14, 48, line_height, "Опыт：")
       self.contents.draw_text(56, 14, 584, line_height, data)
     end
     self.contents.font.size = 14
     w = self.contents.text_size(text).width
     self.contents.fill_rect(0, 0, w + 4, 14, c)
     self.contents.draw_text_f(4, 0, 340, 14, text)
-    #アイテムの入手・消失操作
-    $game_party.gain_item(data,@value) if type <= 2 && GET && @value >= 1  #入手
-    $game_party.gain_item(data,@value,true) if type <= 2 && GET && @value <= -1 #消失
+    # Получение / потеря предмета
+    $game_party.gain_item(data,@value) if type <= 2 && GET && @value >= 1  # получение
+    $game_party.gain_item(data,@value,true) if type <= 2 && GET && @value <= -1 # потеря
     Graphics.frame_reset
   end
   #--------------------------------------------------------------------------
-  # ● 解説文取得
+  # ● Получение поясняющего текста
   #--------------------------------------------------------------------------
   def description(data)
     if data.note =~ /#{STR20W}/
@@ -339,11 +339,11 @@ end
 
 class Game_Temp
   #--------------------------------------------------------------------------
-  # ● 公開インスタンス変数
+  # ● Открытые переменные экземпляра
   #--------------------------------------------------------------------------
   attr_accessor :getinfo_size
   #--------------------------------------------------------------------------
-  # ● オブジェクト初期化
+  # ● Инициализация объекта
   #--------------------------------------------------------------------------
   alias initialize_str20 initialize
   def initialize
@@ -355,7 +355,7 @@ end
 class Bitmap
   unless public_method_defined?(:draw_text_f)
     #--------------------------------------------------------------------------
-    # ● 文字縁取り描画
+    # ● Отрисовка текста с обводкой
     #--------------------------------------------------------------------------
     def draw_text_f(x, y, width, height, str, align = 0, color = Color.new(64,32,128))
       shadow = self.font.shadow
@@ -380,41 +380,35 @@ class Bitmap
 end
 
 #--------------------------------------------------------------------------
-# ★ 追加箇所 - アイテム入手時、フラグなONなら自動で入手表示する。
-#　　アイテム・武器・防具・スキル・テキスト　それぞれ全てに対応
+# ★ Дополнение – при включённом переключателе автоматически показывать уведомления
+#    о получении предметов, оружия, брони, навыков, текста.
 #--------------------------------------------------------------------------
 
 class Game_Interpreter
   
   #--------------------------------------------------------------------------
-  # override method: command_125 // お金の増減
+  # override method: command_125 // изменение денег
   #--------------------------------------------------------------------------
   alias game_interpreter_command_125_ew command_125
   def command_125
-    #game_interpreter_command_125_ew #エイリアスを使わない(多重加算を回避)
+    #game_interpreter_command_125_ew # не используем алиас (избегаем многократного сложения)
     value = operate_value(@params[0], @params[1], @params[2])
     
-    if value >= 1 #お金が増える場合
-      # フラグチェックして、trueならアイテム入手メソッドに飛ばす
-      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG] #フラグチェック
-        # 種類 / 0=ｱｲﾃﾑ 1=武器 2=防具 3=ｽｷﾙ 4=金
+    if value >= 1 # деньги увеличиваются
+      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG] # проверка переключателя
         type = 4
-        # ID  / 金の場合は金額を入力
         id = value
-        # 入手テキスト / 金の場合無効
         text = CUSTOM_GET_WINDOW::GOLD_TEXT_ADD
-        #
         e = $game_temp.streffect
         e.push(Window_Getinfo.new(id, type, text, value))
-      else  #フラグがfalseなら、オリジナルメソッドと同じ動作
+      else
         $game_party.gain_gold(value)
       end
-    elsif value <= -1  #お金が減る場合
-      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG] #フラグチェック
+    elsif value <= -1  # деньги уменьшаются
+      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG]
         type = 4
         id = value
         text = CUSTOM_GET_WINDOW::GOLD_TEXT_REMOVE
-        #
         e = $game_temp.streffect
         e.push(Window_Getinfo.new(id, type, text, value))
       else
@@ -423,33 +417,27 @@ class Game_Interpreter
     end
   end  
   #--------------------------------------------------------------------------
-  # override method: command_126 // アイテムの増減
+  # override method: command_126 // изменение предметов
   #--------------------------------------------------------------------------
   alias game_interpreter_command_126_ew command_126
   def command_126
-    #game_interpreter_command_126_ew
     value = operate_value(@params[1], @params[2], @params[3])
     
-    if value >= 1 #アイテムが増える場合
-      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG] #フラグチェック
-        # 種類 / 0=ｱｲﾃﾑ 1=武器 2=防具 3=ｽｷﾙ 4=金
+    if value >= 1 # предметов прибавилось
+      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG]
         type = 0
-        # ID  / 金の場合は金額を入力
         id = @params[0]
-        # 入手テキスト / 金の場合無効
         text = CUSTOM_GET_WINDOW::ITEM_TEXT_ADD
-        #
         e = $game_temp.streffect
         e.push(Window_Getinfo.new(id, type, text, value))
-      else  #フラグがfalseなら、オリジナルメソッドと同じ動作
+      else
         $game_party.gain_item($data_items[@params[0]], value)
       end
-    elsif value <= -1  #アイテムが減る場合
-      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG] #フラグチェック
+    elsif value <= -1  # предметов убавилось
+      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG]
         type = 0
         id = @params[0]
         text = CUSTOM_GET_WINDOW::ITEM_TEXT_REMOVE
-        #
         e = $game_temp.streffect
         e.push(Window_Getinfo.new(id, type, text, value))
       else
@@ -458,33 +446,27 @@ class Game_Interpreter
     end
   end  
   #--------------------------------------------------------------------------
-  # override method: command_127 // 武器の増減
+  # override method: command_127 // изменение оружия
   #--------------------------------------------------------------------------
   alias game_interpreter_command_127_ew command_127
   def command_127
-    #game_interpreter_command_127_ew
     value = operate_value(@params[1], @params[2], @params[3])
     
-    if value >= 1 #武器が増える場合
-      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG] #フラグチェック
-        # 種類 / 0=ｱｲﾃﾑ 1=武器 2=防具 3=ｽｷﾙ 4=金
+    if value >= 1 # оружия прибавилось
+      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG]
         type = 1
-        # ID  / 金の場合は金額を入力
         id = @params[0]
-        # 入手テキスト / 金の場合無効
         text = CUSTOM_GET_WINDOW::WEAPON_TEXT_ADD
-        #
         e = $game_temp.streffect
         e.push(Window_Getinfo.new(id, type, text, value))
-      else  #フラグがfalseなら、オリジナルメソッドと同じ動作
+      else
         $game_party.gain_item($data_weapons[@params[0]], value, @params[4])
       end
-    elsif value <= -1  #武器が減る場合
-      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG] #フラグチェック
+    elsif value <= -1  # оружия убавилось
+      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG]
         type = 1
         id = @params[0]
         text = CUSTOM_GET_WINDOW::WEAPON_TEXT_REMOVE
-        #
         e = $game_temp.streffect
         e.push(Window_Getinfo.new(id, type, text, value))
       else
@@ -493,34 +475,28 @@ class Game_Interpreter
     end
   end  
   #--------------------------------------------------------------------------
-  # override method: command_128 // 防具の増減
+  # override method: command_128 // изменение брони
   #--------------------------------------------------------------------------
   alias game_interpreter_command_128_ew command_128
   def command_128
     
-    #game_interpreter_command_128_ew
     value = operate_value(@params[1], @params[2], @params[3])
     
-    if value >= 1 #防具が増える場合
-      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG] #フラグチェック
-        # 種類 / 0=ｱｲﾃﾑ 1=武器 2=防具 3=ｽｷﾙ 4=金
+    if value >= 1 # брони прибавилось
+      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG]
         type = 2
-        # ID  / 金の場合は金額を入力
         id = @params[0]
-        # 入手テキスト / 金の場合無効
         text = CUSTOM_GET_WINDOW::ARMOR_TEXT_ADD
-        #
         e = $game_temp.streffect
         e.push(Window_Getinfo.new(id, type, text, value))
-      else  #フラグがfalseなら、オリジナルメソッドと同じ動作
+      else
         $game_party.gain_item($data_armors[@params[0]], value, @params[4])
       end
-    elsif value <= -1  #防具が減る場合
-      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG] #フラグチェック
+    elsif value <= -1  # брони убавилось
+      if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG]
         type = 2
         id = @params[0]
         text = CUSTOM_GET_WINDOW::ARMOR_TEXT_REMOVE
-        #
         e = $game_temp.streffect
         e.push(Window_Getinfo.new(id, type, text, value))
       else
@@ -529,14 +505,14 @@ class Game_Interpreter
     end
   end
   #--------------------------------------------------------------------------
-  # override method command_318 // スキルの増減
+  # override method command_318 // изменение навыков
   #--------------------------------------------------------------------------
   alias game_interpreter_command_318_ew command_318
   def command_318
-    # アクターを探して指定スキルを習得させる
-    # @params[1] = アクターID / $data_actors[] データベース上のアクターID
-    # @params[2] = 習得させる(0)か忘れさせる(1)か
-    # @params[3] = スキルID
+    # Найти актёра и изучить/забыть указанный навык
+    # @params[1] = ID актёра / $data_actors[] ID в базе
+    # @params[2] = изучить (0) или забыть (1)
+    # @params[3] = ID навыка
     iterate_actor_var(@params[0], @params[1]) do |actor|
       if @params[2] == 0
         actor.learn_skill(@params[3])
@@ -545,55 +521,55 @@ class Game_Interpreter
       end
     end
     
-    if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG] #フラグチェック
-      if @params[2] == 0 #習得
+    if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG]
+      if @params[2] == 0 # изучение
         type = 3
         id = @params[3]
         actor_name = $data_actors[@params[1]].name 
         text = actor_name + " / " + CUSTOM_GET_WINDOW::SKILL_TEXT_ADD
-        value = 1 #習得表示フラグ
+        value = 1 # флаг получения
         e = $game_temp.streffect
         e.push(Window_Getinfo.new(id, type, text, value))
-      elsif @params[2] == 1 #忘れる
+      elsif @params[2] == 1 # забывание
         type = 3
         id = @params[3]
         actor_name = $data_actors[@params[1]].name 
         text = actor_name + " / " + CUSTOM_GET_WINDOW::SKILL_TEXT_REMOVE
-        value = -1 #忘却表示フラグ
+        value = -1 # флаг потери
         e = $game_temp.streffect
         e.push(Window_Getinfo.new(id, type, text, value))
       end
     end
   end
   #--------------------------------------------------------------------------
-  # override method command_315 // 経験値の増減
+  # override method command_315 // изменение опыта
   #--------------------------------------------------------------------------
   def command_315
     value = operate_value(@params[2], @params[3], @params[4])
     iterate_actor_var(@params[0], @params[1]) do |actor|
       actor.change_exp(actor.exp + value, @params[5])
     end
-    #p @params[1] #指定キャラか変数指定か(0 or 1)
-    #p @params[14] #指定キャラ番号 or 挿入する値(変数時)★
-    #p @params[2] #増やすのか、もしくは減らすのか(0 or 1)★
-    #p @params[3] #指定数値か変数指定か(0 or 1)
-    #p @params[4] #実際に入れる値★
-    #p @params[5] #レベルアップ表示するか？★
+    #p @params[1] # указан ли конкретный персонаж (0 или 1)
+    #p @params[14] # номер персонажа или значение переменной (при переменной) ★
+    #p @params[2] # увеличение (0) или уменьшение (1) ★
+    #p @params[3] # константа (0) или переменная (1)
+    #p @params[4] # фактическое значение ★
+    #p @params[5] # показывать ли повышение уровня? ★
     
-    if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG] #フラグチェック
+    if $game_switches[CUSTOM_GET_WINDOW::DISPLAY_FLAG]
       type = 6
-      if @params[1] == 0  #パーティ全体か(0)、個別か(1～)
-        actor_name = "パーティ全体"
+      if @params[1] == 0  # вся партия (0) или отдельный персонаж (1～)
+        actor_name = "Вся партия"
       else
         actor_name = $data_actors[@params[1]].name
       end
-      if @params[2] == 0  #増やす(0)のか減らす(1)のか
+      if @params[2] == 0  # увеличение (0) или уменьшение (1)
         text = actor_name + " / " + CUSTOM_GET_WINDOW::EXP_TEXT_ADD
-        value = 1 #入手フラグ
-        id = @params[4] #IDに増減の値を挿入
+        value = 1 # флаг получения
+        id = @params[4] # в ID записываем значение изменения
       elsif @params[2] == 1
         text = actor_name + " / " + CUSTOM_GET_WINDOW::EXP_TEXT_REMOVE
-        value = -1 #消失フラグ
+        value = -1 # флаг потери
         id = @params[4] * -1
       end
       e = $game_temp.streffect

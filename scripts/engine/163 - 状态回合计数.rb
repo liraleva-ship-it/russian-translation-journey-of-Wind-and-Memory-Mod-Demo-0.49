@@ -234,12 +234,12 @@ class Game_Battler < Game_BattlerBase
   #--------------------------------------------------------------------------
   def state_regenerate_message_set(id)
     case id
-    when 0; return  "%s的ＨＰ回复了 %s ！"
-    when 1; return  "%s受到了 %s 的ＨＰ伤害！"
-    when 2; return  "%s的ＭＰ回复了 %s ！"
-    when 3; return  "%s受到了 %s 的ＭＰ伤害！"
-    when 4; return  "%s的ＴＰ回复了 %s ！"
-    when 5; return  "%s受到了 %s 的ＴＰ伤害！"
+    when 0; return  "%s восстановил %s HP!"
+    when 1; return  "%s получил %s урона по HP!"
+    when 2; return  "%s восстановил %s MP!"
+    when 3; return  "%s получил %s урона по MP!"
+    when 4; return  "%s восстановил %s TP!"
+    when 5; return  "%s получил %s урона по TP!"
     end
   end
 end

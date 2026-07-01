@@ -44,11 +44,11 @@ module DMRV
   
   #HP回復無効時のテキストを表示。
   
-  TEXT1 = "无法回复ＨＰ！"
+  TEXT1 = "Невозможно восстановить HP!"
   
   #MP回復無効時のテキストを表示。
   
-  TEXT2 = "无法回复ＭＰ！"
+  TEXT2 = "Невозможно восстановить MP!"
   
 end
 class Game_Battler < Game_BattlerBase

@@ -519,11 +519,11 @@ class Window_ActorCommand < Window_Command
     
   
   def add_equip_change_command
-    add_command(["武器变更", nil], :equip_change, true)
+    add_command(["экипировка", nil], :equip_change, true)
   end
   
   def add_state_command
-    add_command(["状态查看", nil], :state, true)
+    add_command(["Состояние", nil], :state, true)
   end
   
   #--------------------------------------------------------------------------

@@ -12,7 +12,7 @@ class Window_MenuCommand < Window_Command
   alias add_original_commands_partner add_original_commands
   def add_original_commands
     add_original_commands_partner
-    add_command("信物", :partner, partner_enable?) # if $game_switches[1]
+    add_command("Сувениры", :partner, partner_enable?) # if $game_switches[1]
   end
   #--------------------------------------------------------------------------
   # ● コマンド追加？［パートナー設定］
@@ -60,12 +60,11 @@ class Scene_Menu < Scene_MenuBase
 end
 
 
-
 #==============================================================================
 # ■ Window_SptActor
 #==============================================================================
 class Window_SptActor < Window_Base
-  attr_accessor :index   # 入れ替え対象index
+  attr_accessor :index   #入れ替え対象index
   #--------------------------------------------------------------------------
   # ● オブジェクト初期化
   #--------------------------------------------------------------------------
@@ -123,7 +122,7 @@ class Window_SptActor < Window_Base
     draw_status_vocab
     part_refresh(false)
     change_color(system_color)
-    draw_text(contents_width - 200, 0, 200, line_height, "信物")
+    draw_text(contents_width - 200, 0, 200, line_height, "сувениры")
   end
   #--------------------------------------------------------------------------
   # ● リフレッシュ
@@ -176,7 +175,7 @@ class Window_SptActor < Window_Base
     change_color(normal_color)
     draw_text(x+90, y, 60, line_height, now, 2)
     return if !@diff_on or (spirit.nil? and @actor.partners[@index].nil?)
-    # 差分描画
+    #差分描画
     draw_actor_new_param(actor, spirit, x, y, param_id, width)
   end
   #--------------------------------------------------------------------------
@@ -311,7 +310,7 @@ class Window_SptPartner < Window_SptListBase
   # ● 空項目の描画
   #--------------------------------------------------------------------------
   def draw_empty_text(rect)
-    draw_text(rect.x, rect.y, contents_width-8, line_height, "-- empty --", 1)
+    draw_text(rect.x, rect.y, contents_width-8, line_height, "-- пусто --", 1)
   end
   #--------------------------------------------------------------------------
   # ● ヘルプテキスト更新
@@ -362,7 +361,6 @@ class Window_SptSpiritList < Window_SptListBase
     @info_window.spirit = item unless @info_window.nil?
   end
 end
-
 
 
 #==============================================================================
@@ -476,7 +474,7 @@ class Window_SptSpirit < Window_Base
   #--------------------------------------------------------------------------
   def draw_actor_status
     change_color(system_color)
-    draw_text(self.ox, line_height, 100, line_height, "能力")
+    draw_text(self.ox, line_height, 100, line_height, "Характеристики")
     change_color(normal_color)
     8.times do |i|
       x = self.ox + i % 2 * contents_width / 2
@@ -489,7 +487,7 @@ class Window_SptSpirit < Window_Base
   #--------------------------------------------------------------------------
   def draw_actor_skills(skills)
     change_color(system_color)
-    draw_text(self.ox, line_height, 100, line_height, "習得スキル")
+    draw_text(self.ox, line_height, 100, line_height, "Изученные навыки")
     change_color(normal_color)
     skills.each_with_index do |skill, i|
       x = self.ox + i % sr * contents_width / sr
@@ -528,7 +526,7 @@ class Window_SptSpirit < Window_Base
   #--------------------------------------------------------------------------
   def draw_feature_rate(ft)
     change_color(system_color)
-    draw_text(self.ox, line_height, 100, line_height, "耐性")
+    draw_text(self.ox, line_height, 100, line_height, "Сопротивления")
     change_color(normal_color)
     draw_feature_text(ft.rate, self.ox, line_height * 2)
   end
@@ -537,7 +535,7 @@ class Window_SptSpirit < Window_Base
   #--------------------------------------------------------------------------
   def draw_feature_param(ft)
     change_color(system_color)
-    draw_text(self.ox, line_height, 100, line_height, "能力特性")
+    draw_text(self.ox, line_height, 100, line_height, "Особые параметры")
     change_color(normal_color)
     draw_feature_text(ft.param, self.ox, line_height * 2)
   end
@@ -546,7 +544,7 @@ class Window_SptSpirit < Window_Base
   #--------------------------------------------------------------------------
   def draw_feature_attack(ft)
     change_color(system_color)
-    draw_text(self.ox, line_height, 100, line_height, "攻撃特性")
+    draw_text(self.ox, line_height, 100, line_height, "Атаки")
     change_color(normal_color)
     draw_feature_text(ft.attack, self.ox, line_height * 2)
   end
@@ -555,7 +553,7 @@ class Window_SptSpirit < Window_Base
   #--------------------------------------------------------------------------
   def draw_feature_skill(ft)
     change_color(system_color)
-    draw_text(self.ox, line_height, 100, line_height, "スキル特性")
+    draw_text(self.ox, line_height, 100, line_height, "Атрибуты навыков")
     change_color(normal_color)
     draw_feature_text(ft.skill, self.ox, line_height * 2)
   end
@@ -564,7 +562,7 @@ class Window_SptSpirit < Window_Base
   #--------------------------------------------------------------------------
   def draw_feature_equip(ft)
     change_color(system_color)
-    draw_text(self.ox, line_height, 100, line_height, "装備特性")
+    draw_text(self.ox, line_height, 100, line_height, "Снаряжение")
     change_color(normal_color)
     draw_feature_text(ft.equip, self.ox, line_height * 2)
   end
@@ -573,12 +571,11 @@ class Window_SptSpirit < Window_Base
   #--------------------------------------------------------------------------
   def draw_feature_other(ft)
     change_color(system_color)
-    draw_text(self.ox, line_height, 100, line_height, "特性")
+    draw_text(self.ox, line_height, 100, line_height, "Прочее")
     change_color(normal_color)
     draw_feature_text(ft.other, self.ox, line_height * 2)
   end
 end
-
 
 
 #==============================================================================

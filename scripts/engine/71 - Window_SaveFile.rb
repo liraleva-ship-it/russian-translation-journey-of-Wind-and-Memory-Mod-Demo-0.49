@@ -66,4 +66,27 @@ class Window_SaveFile < Window_Base
       cursor_rect.empty
     end
   end
+  alias_method :original_refresh, :refresh
+
+  def refresh
+    # Если включен режим автосейва — рисуем автосейв
+    if $game_system && $game_system.in_autosave_mode
+      contents.clear
+      change_color(normal_color)
+      name = "#{AUTOSAVE_CONFIG::SHORT_NAME} #{@file_index + 1}"
+      draw_text(4, 0, 200, line_height, name)
+      @name_width = text_size(name).width
+      
+      header = DataManager.load_header(@file_index)
+      if header
+        draw_party_characters(152, 58)
+        draw_playtime(0, contents.height - line_height, contents.width - 4, 2)
+      else
+        draw_text(4, line_height, contents.width - 4, line_height, "Пустой слот", 0)
+      end
+    else
+      # Если автосейв выключен — вызываем оригинальный метод (он сохранит всю функциональность!)
+      original_refresh
+    end
+  end
 end

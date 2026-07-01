@@ -156,7 +156,7 @@ module W_REGULAR
   #VIDの変数IDに格納されている値が0の時
   
   ITEM[0] = [
-  {:icon_id => 0,:name => "第",:afterword => "层",:variable_id => 119,:switch_id => 859,:x => 0,:y => 0,:width => 119,:name_c => 16},
+  {:icon_id => 0, :name => "Этаж",:afterword => "ур.",:variable_id => 119,:switch_id => 859,:x => 0,:y => 0,:width => 119,:name_c => 16},
 ]
   
 end

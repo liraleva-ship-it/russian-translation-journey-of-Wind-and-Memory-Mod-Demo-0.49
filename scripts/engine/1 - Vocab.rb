@@ -1,145 +1,146 @@
 #==============================================================================
 # ■ Vocab
 #------------------------------------------------------------------------------
-# 　用語とメッセージを定義するモジュールです。定数でメッセージなどを直接定義す
-# るほか、グローバル変数 $data_system から用語データを取得します。
+#  Модуль, определяющий термины и сообщения. Помимо непосредственного
+#  определения сообщений константами, получает данные терминов из
+#  глобальной переменной $data_system.
 #==============================================================================
 
 module Vocab
 
-  # ショップ画面
-  ShopBuy         = "购入"
-  ShopSell        = "卖出"
-  ShopCancel      = "取消"
-  Possession      = "所持数"
+  # Экран магазина
+  ShopBuy         = "Купить"
+  ShopSell        = "Продать"
+  ShopCancel      = "Отмена"
+  Possession      = "В наличии"
 
-  # ステータス画面
-  ExpTotal        = "现在的经验值"
-  ExpNext         = "到下一%s还有"
+  # Экран статуса
+  ExpTotal        = "Текущий опыт"
+  ExpNext         = "До следующего %s осталось"
 
-  # セーブ／ロード画面
-  SaveMessage     = "要记录到哪个档案？"
-  LoadMessage     = "要读取哪个档案？"
-  File            = "档案"
+  # Экран сохранения / загрузки
+  SaveMessage     = "Записать в файл?"
+  LoadMessage     = "Загрузить из файла?"
+  File            = "Файл"
 
-  # 複数メンバーの場合の表示
-  PartyName       = "%s一行"
+  # Отображение при нескольких членах
+  PartyName       = "%s и компания"
 
-  # 戦闘基本メッセージ
-  Emerge          = "%s出现了！"
-  Preemptive      = "%s先制攻击！"
-  Surprise        = "%s被偷袭了！"
-  EscapeStart     = "%s逃跑！"
-  EscapeFailure   = "但是没有逃掉！"
+  # Базовые сообщения битвы
+  Emerge          = "Появляется %s!"
+  Preemptive      = "%s атакует первым!"
+  Surprise        = "%s захвачен врасплох!"
+  EscapeStart     = "%s убегает!"
+  EscapeFailure   = "Побег не удался!"
 
-  # 戦闘終了メッセージ
-  Victory         = "%s胜利！"
-  Defeat          = "%s战败了。"
-  ObtainExp       = "获得了 %s 点经验！"
-  ObtainGold      = "获得了 %s\\G 魂！"
-  ObtainItem      = "获得了%s！"
-  LevelUp         = "%s提高到了%s %s ！"
-  ObtainSkill     = "学会了%s！"
+  # Сообщения об окончании битвы
+  Victory         = "%s победил!"
+  Defeat          = "%s повержен."
+  ObtainExp       = "Получено %s опыта!"
+  ObtainGold      = "Получено %s\G душ!"
+  ObtainItem      = "Вы получили %s!"
+  LevelUp         = "%s достиг %s %s!"
+  ObtainSkill     = "Выучен навык %s!"
 
-  # アイテム使用
-  UseItem         = "%s使用了%s！"
+  # Использование предмета
+  UseItem         = "%s использует %s!"
 
-  # クリティカルヒット
-  CriticalToEnemy = "会心一击！！"
-  CriticalToActor = "痛恨一击！！"
+  # Критический удар
+  CriticalToEnemy = "Критический удар!!"
+  CriticalToActor = "Сокрушительный удар!!"
 
-  # アクター対象の行動結果
-  ActorDamage     = "%s受到了 %s 点伤害！"
-  ActorRecovery   = "%s的%s恢复了 %s ！"
-  ActorGain       = "%s的%s增加了 %s ！"
-  ActorLoss       = "%s的%s减少了 %s ！"
-  ActorDrain      = "%s的%s被夺取了 %s ！"
-  ActorNoDamage   = "%s没有受到伤害！"
-  ActorNoHit      = "没有命中！　%s没有受到伤害！"
+  # Результаты действий по актёру
+  ActorDamage     = "%s получает %s урона!"
+  ActorRecovery   = "%s восстанавливает %s на %s!"
+  ActorGain       = "%s увеличивает %s на %s!"
+  ActorLoss       = "%s уменьшает %s на %s!"
+  ActorDrain      = "%s поглощает %s у %s!"
+  ActorNoDamage   = "%s не получает урона!"
+  ActorNoHit      = "Промах! %s не получает урона!"
 
-  # 敵キャラ対象の行動結果
-  EnemyDamage     = "对%s造成了 %s 点伤害！"
-  EnemyRecovery   = "%s的%s恢复了 %s ！"
-  EnemyGain       = "%s的%s增加了 %s ！"
-  EnemyLoss       = "%s的%s减少了 %s ！"
-  EnemyDrain      = "%s的%s被夺取了 %s ！"
-  EnemyNoDamage   = "%s沒有受到伤害！"
-  EnemyNoHit      = "沒命中！　%s没有受到伤害！"
+  # Результаты действий по врагу
+  EnemyDamage     = "Нанесено %s урона %s!"
+  EnemyRecovery   = "%s восстанавливает %s на %s!"
+  EnemyGain       = "%s увеличивает %s на %s!"
+  EnemyLoss       = "%s уменьшает %s на %s!"
+  EnemyDrain      = "%s поглощает %s у %s!"
+  EnemyNoDamage   = "%s не получает урона!"
+  EnemyNoHit      = "Промах! %s не получает урона!"
 
-  # 回避／反射
-  Evasion         = "%s闪避了攻击！"
-  MagicEvasion    = "%s闪避了魔法！"
-  MagicReflection = "%s反弹了魔法！"
-  CounterAttack   = "%s进行反击！"
-  Substitute      = "%s在保护%s！"
+  # Уклонение / отражение
+  Evasion         = "%s уклоняется!"
+  MagicEvasion    = "%s уклоняется от магии!"
+  MagicReflection = "%s отражает магию!"
+  CounterAttack   = "%s контратакует!"
+  Substitute      = "%s защищает %s!"
 
-  # 能力強化／弱体
-  BuffAdd         = "%s的%s上升！"
-  DebuffAdd       = "%s的%s下降！"
-  BuffRemove      = "%s的%s复原了！"
+  # Усиление / ослабление
+  BuffAdd         = "%s повышает %s!"
+  DebuffAdd       = "%s понижает %s!"
+  BuffRemove      = "%s восстанавливает %s!"
 
-  # スキル、アイテムの効果がなかった
-  ActionFailure   = "对%s沒有效果！"
+  # Навык / предмет не возымели эффекта
+  ActionFailure   = "Не действует на %s!"
 
-  # エラーメッセージ
-  PlayerPosError  = "プレイヤーの初期位置が設定されていません。"
-  EventOverflow   = "コモンイベントの呼び出しが上限を超えました。"
+  # Сообщения об ошибках
+  PlayerPosError  = "Не задана начальная позиция игрока."
+  EventOverflow   = "Превышен лимит вызовов общих событий."
 
-  # 基本ステータス
+  # Базовые характеристики
   def self.basic(basic_id)
     $data_system.terms.basic[basic_id]
   end
 
-  # 能力値
+  # Параметры
   def self.param(param_id)
     $data_system.terms.params[param_id]
   end
 
-  # 装備タイプ
+  # Типы экипировки
   def self.etype(etype_id)
     $data_system.terms.etypes[etype_id]
   end
 
-  # コマンド
+  # Команды
   def self.command(command_id)
     $data_system.terms.commands[command_id]
   end
 
-  # 通貨単位
+  # Денежная единица
   def self.currency_unit
     $data_system.currency_unit
   end
 
   #--------------------------------------------------------------------------
-  def self.level;       basic(0);     end   # レベル
-  def self.level_a;     basic(1);     end   # レベル (短)
+  def self.level;       basic(0);     end   # Уровень
+  def self.level_a;     basic(1);     end   # Уровень (коротко)
   def self.hp;          basic(2);     end   # HP
-  def self.hp_a;        basic(3);     end   # HP (短)
+  def self.hp_a;        basic(3);     end   # HP (коротко)
   def self.mp;          basic(4);     end   # MP
-  def self.mp_a;        basic(5);     end   # MP (短)
+  def self.mp_a;        basic(5);     end   # MP (коротко)
   def self.tp;          basic(6);     end   # TP
-  def self.tp_a;        basic(7);     end   # TP (短)
-  def self.fight;       command(0);   end   # 戦う
-  def self.escape;      command(1);   end   # 逃げる
-  def self.attack;      command(2);   end   # 攻撃
-  def self.guard;       command(3);   end   # 防御
-  def self.item;        command(4);   end   # アイテム
-  def self.skill;       command(5);   end   # スキル
-  def self.equip;       command(6);   end   # 装備
-  def self.status;      command(7);   end   # ステータス
-  def self.formation;   command(8);   end   # 並び替え
-  def self.save;        command(9);   end   # セーブ
-  def self.game_end;    command(10);  end   # ゲーム終了
-  def self.weapon;      command(12);  end   # 武器
-  def self.armor;       command(13);  end   # 防具
-  def self.key_item;    command(14);  end   # 大事なもの
-  def self.equip2;      command(15);  end   # 装備変更
-  def self.optimize;    command(16);  end   # 最強装備
-  def self.clear;       command(17);  end   # 全て外す
-  def self.new_game;    command(18);  end   # ニューゲーム
-  def self.continue;    command(19);  end   # コンティニュー
-  def self.shutdown;    command(20);  end   # シャットダウン
-  def self.to_title;    command(21);  end   # タイトルへ
-  def self.cancel;      command(22);  end   # やめる
+  def self.tp_a;        basic(7);     end   # TP (коротко)
+  def self.fight;       command(0);   end   # Сражаться
+  def self.escape;      command(1);   end   # Сбежать
+  def self.attack;      command(2);   end   # Атаковать
+  def self.guard;       command(3);   end   # Защищаться
+  def self.item;        command(4);   end   # Предмет
+  def self.skill;       command(5);   end   # Навык
+  def self.equip;       command(6);   end   # Экипировка
+  def self.status;      command(7);   end   # Статус
+  def self.formation;   command(8);   end   # Порядок
+  def self.save;        command(9);   end   # Сохранить
+  def self.game_end;    command(10);  end   # Выход из игры
+  def self.weapon;      command(12);  end   # Оружие
+  def self.armor;       command(13);  end   # Броня
+  def self.key_item;    command(14);  end   # Важное
+  def self.equip2;      command(15);  end   # Сменить экип.
+  def self.optimize;    command(16);  end   # Лучшая экип.
+  def self.clear;       command(17);  end   # Снять всё
+  def self.new_game;    command(18);  end   # Новая игра
+  def self.continue;    command(19);  end   # Продолжить
+  def self.shutdown;    command(20);  end   # Завершить
+  def self.to_title;    command(21);  end   # В заглавие
+  def self.cancel;      command(22);  end   # Отмена
   #--------------------------------------------------------------------------
 end
