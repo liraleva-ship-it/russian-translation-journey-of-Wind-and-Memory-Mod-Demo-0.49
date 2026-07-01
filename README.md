@@ -24,4 +24,4 @@
 Если вы обнаружили баг, опечатку или неточность в переводе — пожалуйста,
 создайте [Issue](https://github.com/лиралева-корабль-это/russian-translation-ourney-of-Wind-and-Memory-Mod-Demo-0.49/issues) в данном репозитории.*
 а также можете обратиться по почте: lev.lira_off@outlook.com 
-илт в предложку тгк: https://t.me/hentai12390Lir
+или в предложку тгк: https://t.me/hentai12390Lir
