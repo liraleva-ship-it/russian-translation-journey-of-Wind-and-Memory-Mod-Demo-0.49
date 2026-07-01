@@ -1,1 +1,4 @@
 перевод[[:space:]]на[[:space:]]русский[[:space:]]v_0.1.rar filter=lfs diff=lfs merge=lfs -text
+
+# Translator++ .trans проекты — большие минифицированные JSON, храним через git-lfs
+*.trans filter=lfs diff=lfs merge=lfs -text
