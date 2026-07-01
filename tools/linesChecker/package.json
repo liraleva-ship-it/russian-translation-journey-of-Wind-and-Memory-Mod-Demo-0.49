@@ -1,0 +1,15 @@
+{
+    "name": "lineschecker",
+    "title": "Lines Checker (game-rendered)",
+    "description": "Live validation of translation line widths using the actual RGSS3 game engine via ModLoader HTTP API. Highlights cells whose text would overflow the in-game dialog/description window.",
+    "main": "linesChecker.js",
+    "homepage": "",
+    "version": "0.1",
+    "author": {
+        "name": "RMModLoader bridge"
+    },
+    "autoload": false,
+    "load": [
+        "linesChecker.js"
+    ]
+}

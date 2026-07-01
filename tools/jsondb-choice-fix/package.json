@@ -1,0 +1,16 @@
+{
+    "name": "jsondb-choice-fix",
+    "title": "JsonDB Choice Guard Fix",
+    "description": "Restores the isTranslatableProperties() guards for Choices (code 102) and Choice Options (code 402) in the rmrgss JsonDB parser. Without them the rmrgss worker thread crashes when a choice value is not a translatable string, aborting the whole parse. Self-healing: re-applies on every launch, so it survives Translator++ / rmrgss updates.",
+    "main": "index.js",
+    "homepage": "",
+    "version": "1.0.0",
+    "author": {
+        "name": "toilettrauma"
+    },
+    "autoload": true,
+    "load": [
+        "index.js"
+    ],
+    "minimumVersion": "7.1.1"
+}
